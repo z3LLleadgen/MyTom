@@ -1,0 +1,13 @@
+{
+  "name": "mytom-report",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vietnamese-item ads research report",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
