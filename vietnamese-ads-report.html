@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phin &amp; Phở Report</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  :root{
+    color-scheme: light;
+    --bg:            #eef0e8;
+    --page:          #e7eadf;
+    --surface:       #fcfcfb;
+    --surface-raised:#ffffff;
+    --ink:           #16201a;
+    --ink-secondary: #52514e;
+    --ink-muted:     #82817a;
+    --hairline:      #d8d5c8;
+    --border:        rgba(22,32,26,0.10);
+    --accent:        #c8391f;
+    --accent-ink:    #ffffff;
+    --chip-bg:       #e2ded0;
+
+    --cat-1: #2a78d6; /* Noodles / Pho / Buns */
+    --cat-2: #eb6834; /* Coffee */
+    --cat-3: #1baf7a; /* Meat Snacks (Jerky) */
+    --cat-4: #eda100; /* Asian Grocery Delivery */
+    --cat-5: #e87ba4; /* Restaurant / Foodservice */
+    --cat-6: #008300; /* Produce / Herbs */
+    --cat-7: #4a3aa7; /* Sauces / Spices / Export */
+    --cat-8: #e34948; /* Off-niche storytelling */
+
+    --seq-1: #86b6ef; --seq-2: #6da7ec; --seq-3: #3987e5; --seq-4: #2a78d6; --seq-5: #184f95;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      color-scheme: dark;
+      --bg:            #100f0c;
+      --page:          #0d0d0d;
+      --surface:       #1a1a19;
+      --surface-raised:#201f1c;
+      --ink:           #f3f1ea;
+      --ink-secondary: #c3c2b7;
+      --ink-muted:     #8f8e86;
+      --hairline:      #2c2c2a;
+      --border:        rgba(255,255,255,0.10);
+      --accent:        #e0603f;
+      --accent-ink:    #14110d;
+      --chip-bg:       #262521;
+
+      --cat-1: #3987e5; --cat-2: #d95926; --cat-3: #199e70; --cat-4: #c98500;
+      --cat-5: #d55181; --cat-6: #2fae2f; --cat-7: #9085e9; --cat-8: #e66767;
+      --seq-1: #6da7ec; --seq-2: #3987e5; --seq-3: #2a78d6; --seq-4: #1c5cab; --seq-5: #104281;
+    }
+  }
+  :root[data-theme="dark"]{
+    color-scheme: dark;
+    --bg:            #100f0c;
+    --page:          #0d0d0d;
+    --surface:       #1a1a19;
+    --surface-raised:#201f1c;
+    --ink:           #f3f1ea;
+    --ink-secondary: #c3c2b7;
+    --ink-muted:     #8f8e86;
+    --hairline:      #2c2c2a;
+    --border:        rgba(255,255,255,0.10);
+    --accent:        #e0603f;
+    --accent-ink:    #14110d;
+    --chip-bg:       #262521;
+
+    --cat-1: #3987e5; --cat-2: #d95926; --cat-3: #199e70; --cat-4: #c98500;
+    --cat-5: #d55181; --cat-6: #2fae2f; --cat-7: #9085e9; --cat-8: #e66767;
+    --seq-1: #6da7ec; --seq-2: #3987e5; --seq-3: #2a78d6; --seq-4: #1c5cab; --seq-5: #104281;
+  }
+
+  *{box-sizing:border-box;}
+  body{ background:var(--bg); color:var(--ink); font-family:'Manrope',system-ui,-apple-system,sans-serif; margin:0; }
+  h1,h2,h3{ text-wrap:balance; margin:0; }
+  .display{ font-family:'Anton',system-ui,sans-serif; font-weight:400; text-transform:uppercase; letter-spacing:0.01em; }
+  .eyebrow{ font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); font-weight:500; }
+  .wrap{ max-width:1180px; margin:0 auto; padding:0 28px; }
+  a{ color:inherit; }
+  ::selection{ background:var(--accent); color:var(--accent-ink); }
+
+  /* ---------- HERO ---------- */
+  .hero{ padding:64px 0 40px; border-bottom:1px solid var(--hairline); background:var(--page); }
+  .hero .eyebrow{ margin-bottom:14px; display:block; }
+  .hero h1{ font-size:clamp(34px,5.4vw,64px); line-height:0.98; max-width:16ch; }
+  .hero h1 em{ font-style:normal; color:var(--accent); }
+  .hero p.sub{ margin:20px 0 0; max-width:56ch; font-size:16.5px; line-height:1.6; color:var(--ink-secondary); }
+  .stat-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:1px; background:var(--hairline); border:1px solid var(--hairline); margin-top:36px; border-radius:10px; overflow:hidden; }
+  .stat-tile{ background:var(--surface); padding:20px 22px; }
+  .stat-tile .num{ font-family:'Anton',sans-serif; font-size:38px; line-height:1; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .stat-tile .num span{ font-size:20px; color:var(--ink-muted); font-family:'Manrope',sans-serif; }
+  .stat-tile .lbl{ margin-top:8px; font-size:12.5px; color:var(--ink-secondary); line-height:1.4; }
+
+  /* ---------- SECTIONS ---------- */
+  section{ padding:56px 0; }
+  section.essay{ background:var(--surface); border-bottom:1px solid var(--hairline); }
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:24px; margin-bottom:28px; flex-wrap:wrap; }
+  .section-head h2{ font-size:26px; }
+  .section-head .count{ font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-muted); }
+
+  .essay-grid{ display:grid; grid-template-columns:220px 1fr; gap:48px; }
+  .essay-grid .side{ font-size:13px; color:var(--ink-muted); line-height:1.7; border-left:2px solid var(--accent); padding-left:16px; height:fit-content; position:sticky; top:24px; }
+  .essay-grid .side strong{ color:var(--ink); display:block; margin-bottom:4px; }
+  .essay-grid .side div{ margin-bottom:16px; }
+  .prose{ font-size:16.5px; line-height:1.75; color:var(--ink); max-width:68ch; }
+  .prose p{ margin:0 0 18px; }
+  .prose p:first-of-type::first-letter{ font-family:'Anton',sans-serif; font-size:52px; float:left; line-height:0.8; padding:6px 8px 0 0; color:var(--accent); }
+
+  /* ---------- CHARTS ---------- */
+  section.charts{ background:var(--page); }
+  .chart-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+  .chart-card{ background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:22px 24px 18px; }
+  .chart-card.full{ grid-column:1 / -1; }
+  .chart-card h3{ font-size:14.5px; font-weight:700; margin-bottom:2px; }
+  .chart-card .note{ font-size:12px; color:var(--ink-muted); margin-bottom:14px; }
+  .chart-card svg{ display:block; width:100%; height:auto; overflow:visible; }
+  .bar-label{ font-size:11.5px; fill:var(--ink-secondary); font-family:'Manrope',sans-serif; }
+  .bar-value{ font-size:12px; font-weight:700; fill:var(--ink); font-family:'JetBrains Mono',monospace; font-variant-numeric:tabular-nums; }
+  .grid-line{ stroke:var(--hairline); stroke-width:1; }
+  .bar-rect{ transition:opacity .15s; }
+  .bar-rect:hover{ opacity:0.72; }
+  .split-pair{ display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  @media (max-width:760px){ .split-pair{ grid-template-columns:1fr; } .essay-grid{ grid-template-columns:1fr; } .essay-grid .side{ position:static; border-left:none; border-top:2px solid var(--accent); padding-left:0; padding-top:12px; display:flex; gap:24px; flex-wrap:wrap; } .essay-grid .side div{ margin-bottom:0; } .chart-grid{ grid-template-columns:1fr; } }
+
+  /* ---------- LEGEND ---------- */
+  .legend{ display:flex; flex-wrap:wrap; gap:10px 18px; margin-top:14px; }
+  .legend-item{ display:flex; align-items:center; gap:7px; font-size:12px; color:var(--ink-secondary); }
+  .legend-swatch{ width:10px; height:10px; border-radius:3px; flex:none; }
+
+  /* ---------- GRID SECTION ---------- */
+  section.grid-section{ background:var(--surface); }
+  .filters{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:26px; }
+  .filter-btn{ font-family:'Manrope',sans-serif; font-size:12.5px; font-weight:700; padding:8px 14px; border-radius:999px; border:1px solid var(--border); background:var(--chip-bg); color:var(--ink-secondary); cursor:pointer; display:flex; align-items:center; gap:7px; }
+  .filter-btn .dot{ width:8px; height:8px; border-radius:50%; flex:none; }
+  .filter-btn[aria-pressed="true"]{ background:var(--ink); color:var(--surface); border-color:var(--ink); }
+  .filter-btn[aria-pressed="true"] .dot{ outline:2px solid var(--surface); }
+  .filter-btn span.n{ opacity:0.7; font-weight:500; }
+
+  .ad-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(268px,1fr)); gap:14px; }
+  .ad-card{ background:var(--surface-raised); border:1px solid var(--border); border-radius:10px; padding:15px 16px 14px; display:flex; flex-direction:column; gap:9px; border-top:3px solid var(--cat); }
+  .ad-card .top{ display:flex; justify-content:space-between; align-items:flex-start; gap:8px; }
+  .ad-card .brand{ font-size:13.5px; font-weight:800; line-height:1.25; }
+  .ad-card .cat-tag{ font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; color:var(--cat); white-space:nowrap; }
+  .ad-card .headline{ font-size:12.5px; font-weight:700; color:var(--ink); line-height:1.35; min-height:1.35em; }
+  .ad-card .body{ font-size:12px; line-height:1.5; color:var(--ink-secondary); flex:1; }
+  .ad-card .meta{ display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
+  .pill{ font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; background:var(--chip-bg); color:var(--ink-secondary); white-space:nowrap; }
+  .pill.tier-winning{ background:#0ca30c; color:#fff; }
+  .pill.tier-optimized{ background:var(--cat-1); color:#fff; }
+  .pill.tier-growing{ background:var(--chip-bg); color:var(--ink-secondary); }
+  .pill.tier-scaling{ background:var(--chip-bg); color:var(--ink-secondary); }
+  .pill.tier-testing{ background:var(--chip-bg); color:var(--ink-muted); }
+  .ad-card .foot{ display:flex; justify-content:space-between; align-items:center; margin-top:6px; padding-top:9px; border-top:1px solid var(--hairline); font-size:11px; color:var(--ink-muted); font-family:'JetBrains Mono',monospace; font-variant-numeric:tabular-nums;}
+  .ad-card .foot a{ color:var(--accent); text-decoration:none; font-family:'Manrope',sans-serif; font-weight:700; }
+  .ad-card .foot a:hover{ text-decoration:underline; }
+  .empty-msg{ text-align:center; padding:60px 0; color:var(--ink-muted); display:none; }
+
+  footer{ padding:36px 0 60px; }
+  footer .wrap{ font-size:12px; color:var(--ink-muted); line-height:1.7; border-top:1px solid var(--hairline); padding-top:22px; }
+</style>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="eyebrow">GetHookd sweep · Vietnamese grocery niche · Sept 2026</span>
+    <h1 class="display">100 vietnamese-item ads,<br><em>read side by side</em></h1>
+    <p class="sub">Every active-social ad that genuinely sells a Vietnamese coffee, noodle, sauce, snack, or grocery-delivery SKU, pulled straight from GetHookd's ad library, hand-verified against a much noisier keyword match, and laid out with the numbers that explain which plays are actually working.</p>
+    <div class="stat-row">
+      <div class="stat-tile"><div class="num">100</div><div class="lbl">verified ads, out of 211 raw keyword hits</div></div>
+      <div class="stat-tile"><div class="num">68<span>%</span></div><div class="lbl">are coffee or noodle/pho — the two breakout SKUs</div></div>
+      <div class="stat-tile"><div class="num">60.7</div><div class="lbl">average GetHookd performance score (0–100)</div></div>
+      <div class="stat-tile"><div class="num">69<span>d</span></div><div class="lbl">average days an ad has stayed live</div></div>
+    </div>
+  </div>
+</header>
+
+<section class="essay">
+  <div class="wrap essay-grid">
+    <div class="side">
+      <div><strong>Source</strong>GetHookd ad library, live DOM data via MCP — no login screenshotting needed once authenticated.</div>
+      <div><strong>Query</strong>"vietnamese" + niche terms (coffee, phở, sauce, snack, grocery), 211 raw hits, de-duplicated brand-capped.</div>
+      <div><strong>Filter</strong>Kept only ads that genuinely reference Vietnam/Vietnamese in copy or brand; dropped 96 false positives (Dior, Red Bull, wig ads, language apps).</div>
+      <div><strong>Caveat</strong>GetHookd's location index doesn't cover Vietnam or the Philippines — geo columns below reflect where the ad ran, not where the product ships.</div>
+    </div>
+    <div class="prose">
+      <p>Search "vietnamese" in an ad library and you get Dior's Sauvage, a Red Bull can, and four copies of a castor-oil testimonial that happens to mention a seamstress named Linh. Of 211 raw keyword hits pulled from GetHookd, fewer than half were actually selling something Vietnamese. The other half were fuzzy-matched noise — proof that any competitive sweep in this niche has to be read by a human before it's read as data. Once cleaned, 100 genuine ads remained, and they sort into a clear story.</p>
+      <p>Two categories carry two-thirds of the market: coffee (33 ads) and noodles/phở (35, counting instant noodles and steamed buns). Coffee splits into three distinct plays. There's heritage-authenticity marketing — Bazan, Nguyen Coffee Supply, and Cafe Saigon selling robusta on caffeine content and phin ritual, usually to a US audience willing to pay $50–75 for a starter kit. There's convenience-hacking — JustPour's "30-second Vietnamese coffee at home" concentrate, which reframes the category as a lifestyle shortcut rather than a cultural import. And there's ingredient licensing — Superjelly and Setu putting "Vietnamese Iced Coffee" flavoring into protein powder, and Pioka selling egg-coffee foam powder to boba shops as a B2B menu add-on. None of these three plays compete with each other; they're stacked on the same cultural asset at different price points.</p>
+      <p>Noodles tell a parallel but distinct story. Chin-Su's Pho Story runs mainstream CPG ads pointing straight at Save Mart and Albertsons shelf placement — this is the instant-noodle aisle, not DTC. Alongside it sits a whole layer of Vietnamese-language advertising that an English-only search would miss entirely: ONICI Ăn Vặt, Weee!, and Saigon Savory run native-script copy timed to Tết, targeting the diaspora directly rather than a curious American shopper. Weee! alone shows up eight times promoting individual SKUs — chè desserts, frozen wontons — the way a grocer runs weekly circulars, not the way a DTC brand runs a hero ad.</p>
+      <p>The performance data rewards patience over polish. The five "Winning"-tier ads (score 91+) belong to jerky, herbs, and foodservice — small-catalog niches with less auction competition — and every one of them has been running 118 to 270 days. The "Testing" tier, by contrast, skews toward brand-new creative just entering the auction. Read together, the lesson isn't which ad looks best; it's that a genuine winner in this niche stays live for months, and a 2-day-old ad hasn't earned an opinion yet. Shop Now is the CTA on nearly half of everything (47%), and video edges out static images 46-to-42 — this is a bottom-funnel, DTC-shaped niche, not an awareness play.</p>
+    </div>
+  </div>
+</section>
+
+<section class="charts">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>The patterns worth reusing</h2>
+      <span class="count">n = 100 verified ads</span>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-card full">
+        <h3>What's actually being sold</h3>
+        <div class="note">Ad count by category — coffee and noodles/phở together are 68% of the swept set.</div>
+        <svg id="chart-category" viewBox="0 0 900 300"></svg>
+      </div>
+
+      <div class="chart-card">
+        <h3>Format mix</h3>
+        <div class="note">Video edges out static images; carousels are a distant third.</div>
+        <svg id="chart-format" viewBox="0 0 420 170"></svg>
+      </div>
+      <div class="chart-card">
+        <h3>Call-to-action mix</h3>
+        <div class="note">Shop Now dominates — this is bottom-funnel DTC, not brand awareness.</div>
+        <svg id="chart-cta" viewBox="0 0 420 190"></svg>
+      </div>
+
+      <div class="chart-card full">
+        <h3>Performance tier distribution</h3>
+        <div class="note">GetHookd performance score, bucketed low → high. Most creative is still early; few ads have proven durable.</div>
+        <svg id="chart-tier" viewBox="0 0 900 190"></svg>
+      </div>
+
+      <div class="chart-card full">
+        <h3>Winners run long: score and lifespan by category</h3>
+        <div class="note">Two separate scales, same category order and colors — a durable winner reads as high on both, not one.</div>
+        <div class="split-pair">
+          <div><svg id="chart-score" viewBox="0 0 440 260"></svg></div>
+          <div><svg id="chart-days" viewBox="0 0 440 260"></svg></div>
+        </div>
+      </div>
+
+      <div class="chart-card full">
+        <h3>Who's buying the most ad inventory</h3>
+        <div class="note">Top brands by verified ad count in this sweep.</div>
+        <svg id="chart-brands" viewBox="0 0 900 260"></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="grid-section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Every ad, one box each</h2>
+      <span class="count" id="grid-count">100 of 100 shown</span>
+    </div>
+    <div class="filters" id="filters"></div>
+    <div class="ad-grid" id="ad-grid"></div>
+    <div class="empty-msg" id="empty-msg">No ads match this filter.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Data pulled live from GetHookd (app.gethookd.ai) via MCP tool calls on 2026‑09‑05 — Meta Ad Library creative surfaced through GetHookd's index, not scraped directly from Meta. Performance score is GetHookd's own 0–100 index (Testing 1–40 · Scaling 41–60 · Growing 61–80 · Optimized 81–90 · Winning 91+). "Days active" is days the ad has been continuously listed. Geo columns reflect Meta ad-targeting metadata where present; GetHookd's location index has no coverage for Vietnam or the Philippines, so most rows show no country or a US/UK/EU flag even when the brand ships to Southeast Asia. 100 ads shown here were kept after manually verifying genuine Vietnamese product/brand relevance out of 211 raw keyword-matched candidates; 9 additional genuine matches were set aside to hold the set at exactly 100, prioritized by category relevance and performance score.
+  </div>
+</footer>
+
+<script id="ads-data" type="application/json">[{"id":122394132,"b":"ONICI Ăn Vặt Tại Mỹ","c":"Noodles / Pho / Buns","t":"","x":"Tết tới sát nút rồi mấy bà ơi 🧧✨ Bánh ngon, bánh xịn là phải mua sớm mới kịp chuẩn bị mâm bánh đãi khách, biếu người thân nè 😍 Đợi cận Tết là dễ hết hàng lắm đó nhaaa~ Shop Now:…","cta":"Order Now","f":"video","ps":100,"pt":"Winning","da":207,"st":"active","sd":"2026-02-10","lang":"vi","url":"https://app.gethookd.ai/share/ad/122394132?signature=16d0cb6f2a1a2c0c09e5dcff425c791546ee997381e3ef22f5f2ae61675304bc","plat":["facebook","instagram","audience_network","threads"]},{"id":96168635,"b":"Life's Good Kitchen","c":"Noodles / Pho / Buns","t":"","x":"It’s bold, balanced, and easy to pack! @healthiersimple(Instagram) brings us a citrusy twist on a classic Vietnamese dish — Lime Bún Chả! 🍋🥢 With a zesty lime sauce, this dish tastes like a…","cta":"Like Page","f":"video","ps":100,"pt":"Winning","da":128,"st":"active","sd":"2026-04-30","lang":"en","url":"https://app.gethookd.ai/share/ad/96168635?signature=551d1e3934bad43e927eb900b4241f5517d0f13fed606e8a062abd534f33534f","plat":["facebook"]},{"id":96168621,"b":"Life's Good Kitchen","c":"Noodles / Pho / Buns","t":"","x":"It’s bold, balanced, and easy to pack! @healthiersimple(Instagram) brings us a citrusy twist on a classic Vietnamese dish — Lime Bún Chả! 🍋🥢 With a zesty lime sauce, this dish tastes like a…","cta":"Like Page","f":"video","ps":100,"pt":"Winning","da":128,"st":"active","sd":"2026-04-30","lang":"en","url":"https://app.gethookd.ai/share/ad/96168621?signature=cfb0889a4fdc0d6807b9d08d79cc67a4454a22ff24612d2ffa4127ee286dc9ee","plat":["facebook"]},{"id":90744960,"b":"Life's Good Kitchen","c":"Noodles / Pho / Buns","t":"","x":"It’s bold, balanced, and easy to pack! @healthiersimple(Instagram) brings us a citrusy twist on a classic Vietnamese dish — Lime Bún Chả! 🍋🥢 With a zesty lime sauce, this dish tastes like a…","cta":"Like Page","f":"video","ps":100,"pt":"Winning","da":149,"st":"active","sd":"2026-04-09","lang":"en","url":"https://app.gethookd.ai/share/ad/90744960?signature=8c909af9be6251f7c509a421d3b196a798404affc0e8b159d00134abb653ca9a","plat":["facebook"]},{"id":122394286,"b":"ONICI Ăn Vặt Tại Mỹ","c":"Noodles / Pho / Buns","t":"Bánh Mix Đài Loan (Taiwanese Variety Snack Box) - Pre-order 1 week","x":"Tết tới sát nút rồi mấy bà ơi 🧧✨ Bánh ngon, bánh xịn là phải mua sớm mới kịp chuẩn bị mâm bánh đãi khách, biếu người thân nè 😍 Đợi cận Tết là dễ hết hàng lắm đó nhaaa~ Shop Now:…","cta":"Order Now","f":"carousel","ps":86,"pt":"Optimized","da":145,"st":"active","sd":"2026-04-13","lang":"vi","url":"https://app.gethookd.ai/share/ad/122394286?signature=ae584d37586a152cc1181c35fcf540a721a95178d0512b5b7fee2664bdf9ef34","plat":["facebook","instagram","audience_network","threads"]},{"id":133340976,"b":"Pho'nomenal Foods","c":"Noodles / Pho / Buns","t":"Ready In Minutes","x":"Healthy and delicious comfort Pho for any meal of the day","cta":"Shop Now","f":"video","ps":86,"pt":"Optimized","da":144,"st":"active","sd":"2026-04-14","lang":"en","url":"https://app.gethookd.ai/share/ad/133340976?signature=fa3a68da7834b0aaab9c7bfba0a30779c4736eaa1be00290c1f46705516f5508","plat":["facebook","instagram","threads"]},{"id":133341017,"b":"Pho'nomenal Foods","c":"Noodles / Pho / Buns","t":"Ready In Minutes","x":"Healthy and delicious comfort Pho for any meal of the day","cta":"Shop Now","f":"video","ps":86,"pt":"Optimized","da":117,"st":"active","sd":"2026-05-11","lang":"en","url":"https://app.gethookd.ai/share/ad/133341017?signature=4237de1075f2ed123e44037c7255cfdff68dd05bae9720d3edd1606ffe11fa54","plat":["facebook","instagram","audience_network"]},{"id":139504871,"b":"Biocean by Danube Blue","c":"Noodles / Pho / Buns","t":"Save Up to 10% Automatically","x":"Keep your Pho kitchen ready for every order. 🍜🥡 From soup containers and bowls to takeout boxes and chopsticks, biocean provides the packaging your Vietnamese restaurant needs for busy…","cta":"Shop Now","f":"carousel","ps":74,"pt":"Growing","da":44,"st":"active","sd":"2026-07-23","lang":"en","url":"https://app.gethookd.ai/share/ad/139504871?signature=47015cec60bc0cfc9ca839c39e2ce68fb2ced8a35d9c391eb8e1419707f980ae","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":111742229,"b":"Qookware","c":"Noodles / Pho / Buns","t":"","x":"VIETNAMESISK BUN CHA | 4-5 personer Reklame for @qookware_ Den her risnudelsalat kan meget vel gå hen og blive din nye sommerfavorit! Gem den til en lun sommeraften og følg med på profilen,…","cta":"Shop Now","f":"video","ps":74,"pt":"Growing","da":198,"st":"active","sd":"2026-02-19","lang":null,"url":"https://app.gethookd.ai/share/ad/111742229?signature=cec7498494c0810f86a1e3b179c548b87bda2664d9c359371daeacc0a4356ec4","plat":["facebook","instagram","messenger","threads"]},{"id":136271813,"b":"Biocean by Danube Blue","c":"Noodles / Pho / Buns","t":"Biocean by Danube Blue","x":"Running a busy restaurant? Stock up on reliable takeout supplies for pho, noodles, rice dishes, and daily food service. Save automatically when you order more: ✔ Buy 5+ cases: Save 5% ✔ Buy…","cta":"Shop Now","f":"carousel","ps":66,"pt":"Growing","da":47,"st":"active","sd":"2026-07-20","lang":"en","url":"https://app.gethookd.ai/share/ad/136271813?signature=f23f5eda566adf3018a3b8c8ac867cb3ea1be2818d552f38cd54a6641369c135","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":133341355,"b":"Pho'nomenal Foods","c":"Noodles / Pho / Buns","t":"Ready In Minutes","x":"Healthy and delicious comfort Pho for any meal of the day","cta":"Shop Now","f":"video","ps":66,"pt":"Growing","da":85,"st":"active","sd":"2026-06-12","lang":"en","url":"https://app.gethookd.ai/share/ad/133341355?signature=1b66e4582f84e2364b10c71a19724e44894afc4e469418c389463db1a67ee15f","plat":["facebook","instagram","audience_network"]},{"id":160538947,"b":"ONICI Ăn Vặt Tại Mỹ","c":"Noodles / Pho / Buns","t":"Bánh Mix Đài Loan (Taiwanese Variety Snack Box)","x":"🥮 Hàng em mới về – Bánh Trứng Chảy Onici Oheasy 💛 Shop Now: https://www.onicifood.com/products/banh-nhan-trứng-muối Đang học, đang làm hay lướt TikTok mà tự nhiên thèm đồ ngọt thì thử ngay…","cta":"Order Now","f":"carousel","ps":38,"pt":"Testing","da":11,"st":"active","sd":"2026-08-25","lang":"vi","url":"https://app.gethookd.ai/share/ad/160538947?signature=7899775b64237e9d53d5a2731919db654a031544bcf15a0c81dee4ce9afaa3f7","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":170314839,"b":"ONICI Ăn Vặt Tại Mỹ","c":"Noodles / Pho / Buns","t":"","x":"BÁNH TRỨNG CHẢY LIU XIN SU – CẮN MỘT MIẾNG LÀ MÊ! 😋 Shop Now: https://www.onicifood.com/products/banh-trung-chay-liu-xin-su Lớp vỏ bánh mềm thơm, kết hợp cùng phần nhân trứng muối béo mịn,…","cta":"Order Now","f":"video","ps":14,"pt":"Testing","da":3,"st":"active","sd":"2026-09-02","lang":"vi","url":"https://app.gethookd.ai/share/ad/170314839?signature=9c20aa456a5639f29bccd0eb7b0bc7eccd6165ad092bf915a554f440a2d4f08e","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":171038049,"b":"ONICI Ăn Vặt Tại Mỹ","c":"Noodles / Pho / Buns","t":"","x":"💛 Cảnh báo: Đừng xem clip này nha mấy bà!!! 😭 Shop Now: https://www.onicifood.com/products/banh-nhan-trứng-muối Xem xong là dễ bị ghiền bánh trứng chảy như tui lắm đó 🪺🤤 Cắn một miếng là…","cta":"Order Now","f":"video","ps":12,"pt":"Testing","da":2,"st":"active","sd":"2026-09-03","lang":"vi","url":"https://app.gethookd.ai/share/ad/171038049?signature=18aacf01a44ecaba7fe6ece36a82a80abd423662499686604a5a28b12c04415a","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":146805647,"b":"Bep-pa","c":"Noodles / Pho / Buns","t":"Where Gastonia Goes for Pho","x":"Gastonia's Pho Destination 🍜 Authentic Vietnamese pho 🥣 From-scratch broth 🥩 Fresh ingredients, every bowl made to order ⭐ The flavor that keeps people coming back This is your pho place.","cta":"Learn More","f":"image","ps":null,"pt":"Unscored","da":26,"st":"inactive","sd":"2026-08-10","lang":"en","url":"https://app.gethookd.ai/share/ad/146805647?signature=67838ab4779e66974d1d821b67c825a5ee9b6f62395e8956da07f7ecd058efb3","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":146805639,"b":"Bep-pa","c":"Noodles / Pho / Buns","t":"Where Gastonia Goes for Pho","x":"Gastonia's Pho Destination 🍜 Authentic Vietnamese pho 🥣 From-scratch broth 🥩 Fresh ingredients, every bowl made to order ⭐ The flavor that keeps people coming back This is your pho place.","cta":"Learn More","f":"image","ps":null,"pt":"Unscored","da":21,"st":"inactive","sd":"2026-08-15","lang":"en","url":"https://app.gethookd.ai/share/ad/146805639?signature=04a1c8bf8fa5def1dc73e470a6284f913649e35c43b3c902519c2bdf57b85b83","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":137552325,"b":"Bep-pa","c":"Noodles / Pho / Buns","t":"Where Gastonia Goes for Pho","x":"Gastonia's Pho Destination 🍜 Authentic Vietnamese pho 🥣 From-scratch broth 🥩 Fresh ingredients, every bowl made to order ⭐ The flavor that keeps people coming back This is your pho place.","cta":"Learn More","f":"image","ps":null,"pt":"Unscored","da":32,"st":"inactive","sd":"2026-08-04","lang":"en","url":"https://app.gethookd.ai/share/ad/137552325?signature=83c1dd1f6291b161e26558a5a691a8e0f5b6387b17f6ed623ad5de519829819e","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":134889545,"b":"Phở Story USA","c":"Noodles / Pho / Buns","t":"","x":"MEET A NEW MEMBER OF THE PANTRY CREW 🙋🏻‍♀️✨​ There’s a new neighbor in the cabinet, and the whole crew is buzzing! 🏠✨​ 😎Let’s meet Phở Story✌🏻- the one who brings the heart of Vietnamese…","cta":"Contact Us","f":"image","ps":null,"pt":"Unscored","da":31,"st":"inactive","sd":"2026-08-05","lang":"en","url":"https://app.gethookd.ai/share/ad/134889545?signature=64df2b987f2215c808165fd7af4467266dcf9dc816137c9b2341469582d65729","plat":["instagram"]},{"id":120259767,"b":"Phở Story USA","c":"Noodles / Pho / Buns","t":"","x":"MEET A NEW MEMBER OF THE PANTRY CREW 🙋🏻‍♀️✨​ There’s a new neighbor in the cabinet, and the whole crew is buzzing! 🏠✨​ 😎Let’s meet Phở Story✌🏻- the one who brings the heart of Vietnamese…","cta":"Contact Us","f":"image","ps":null,"pt":"Unscored","da":58,"st":"inactive","sd":"2026-07-09","lang":"en","url":"https://app.gethookd.ai/share/ad/120259767?signature=0eb73952c1f72469478096a517d312bfa6b827bb80db462f569253f853cc97a8","plat":["instagram"]},{"id":140218519,"b":"Yelp for Business - Las Vegas","c":"Noodles / Pho / Buns","t":"Pho 90","x":"Looking for Vietnamese? Check out Pho 90 on Yelp!","cta":"See More","f":"image","ps":null,"pt":"Unscored","da":28,"st":"inactive","sd":"2026-08-08","lang":"en","url":"https://app.gethookd.ai/share/ad/140218519?signature=ff02b850d5ea6fb7f5f75a6aa26de75427cda54994154ef6f3fa542d657ff5dc","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":119813077,"b":"Adrian Leung","c":"Noodles / Pho / Buns","t":"","x":"Follow me If you're a Vietnamese woman wanting to lose weight while still being able to eat Vietnamese foods like Pho","cta":"View IG","f":"video","ps":null,"pt":"Unscored","da":216,"st":"inactive","sd":"2026-02-01","lang":"en","url":"https://app.gethookd.ai/share/ad/119813077?signature=7c6391a8f18247c9e2bcd5a8628f530a96d1b7d3f1b6371cd956e2937434e442","plat":["instagram"]},{"id":123235923,"b":"Union Viet","c":"Noodles / Pho / Buns","t":"","x":"Craving Vietnamese Food? Stay Cool at Union Viet! 🧊🍜 Escape the London heat and enjoy authentic Vietnamese flavors in the comfort of our fully AIR-CONDITIONED restaurant! From piping hot…","cta":"Like Page","f":"video","ps":null,"pt":"Unscored","da":54,"st":"inactive","sd":"2026-07-13","lang":"en","url":"https://app.gethookd.ai/share/ad/123235923?signature=53db80d76a088a189f47e97f19d8075848e62fd41ef6bb3466ee6f163e278d5c","plat":["facebook"]},{"id":119813125,"b":"Adrian Leung","c":"Noodles / Pho / Buns","t":"","x":"Follow me If you're a Vietnamese woman wanting to lose weight while still being able to eat Pho, Rice and Noodles","cta":"View IG","f":"image","ps":null,"pt":"Unscored","da":216,"st":"inactive","sd":"2026-02-01","lang":"en","url":"https://app.gethookd.ai/share/ad/119813125?signature=a5adc07ecc0f02bf19fbdf5cd2439a073a74ef9dd5044d3bd814814a2e2c5594","plat":["instagram"]},{"id":119813067,"b":"Adrian Leung","c":"Noodles / Pho / Buns","t":"","x":"Follow me If you're a Vietnamese woman wanting to lose weight while still being able to eat Pho, Rice and Noodles","cta":"View IG","f":"image","ps":null,"pt":"Unscored","da":216,"st":"inactive","sd":"2026-02-01","lang":"en","url":"https://app.gethookd.ai/share/ad/119813067?signature=28fc6b4dcda5120d0d29a047038e87972f428b38deb114c707526cd6399c3874","plat":["instagram"]},{"id":134889403,"b":"Phở Story USA","c":"Noodles / Pho / Buns","t":"","x":"Enjoy a bowl of authentic Vietnamese Phở made with rice noodles. With its soft, silky texture that stays firm in the hot broth and a chewiness that satisfies every bite. Disclaimer:…","cta":"View IG","f":"image","ps":null,"pt":"Unscored","da":34,"st":"inactive","sd":"2026-08-02","lang":"en","url":"https://app.gethookd.ai/share/ad/134889403?signature=6eb9ce1f5c9a213cb9975acfb8527bf0adf686105a684551519519cbe4d824a4","plat":["instagram"]},{"id":131962258,"b":"Góc Ăn Vặt - Snack corner","c":"Noodles / Pho / Buns","t":"","x":"Bánh tráng với trứng muối, tưởng ko hợp mà hợp ko tưởng á 😋😋 #SnackcornerWestminster #vietnamesefood #OCfoodie #Anvatduongpho #anvat","cta":"Message","f":"video","ps":null,"pt":"Unscored","da":33,"st":"inactive","sd":"2026-08-03","lang":"nl","url":"https://app.gethookd.ai/share/ad/131962258?signature=b84310f27452b8815909751f325924f27ada1f3cb0f6fb698c4266ec187d4a58","plat":["facebook","instagram","audience_network","messenger"]},{"id":120999312,"b":"Papabanhbao","c":"Noodles / Pho / Buns","t":"","x":"✨ Ba vị mới – Mềm ngon khó cưỡng | Three new flavors – Soft, savory, irresistible! -------- .Papabanhbao - Traditional Vietnamese Flavor .www.papabanhbao.com .(425) 900-1111 .904 Industry…","cta":"Message","f":"video","ps":null,"pt":"Unscored","da":84,"st":"inactive","sd":"2026-06-13","lang":"en","url":"https://app.gethookd.ai/share/ad/120999312?signature=9f0044ad6fab0d1f6f27f92e9eeb0b785cdadf2061fc629f28895b54217c8597","plat":["facebook","instagram","audience_network","messenger","whatsapp"]},{"id":120999292,"b":"Papabanhbao","c":"Noodles / Pho / Buns","t":"Bánh bao TIẾT KIỆM - TIỆN LỢI","x":"Mình đã tìm ra bánh bao chân ái cho việc tích trữ đồ ăn. Một đặt cùng lúc 15 - 20 cái ship tận nhà, ăn cả tuần cực TIẾT KIỆM VÍ TIỀN - TIẾT KIỆM THỜI GIAN. ✨ Nhờ những chiếc bánh bao này mà…","cta":"Message","f":"video","ps":null,"pt":"Unscored","da":77,"st":"inactive","sd":"2026-06-20","lang":"en","url":"https://app.gethookd.ai/share/ad/120999292?signature=72431fa9344a4da69aeedc9ce43c9e24978777af478ae96a3b4b55ec6f3530be","plat":["facebook","instagram","audience_network","messenger","whatsapp"]},{"id":134889344,"b":"Phở Story USA","c":"Noodles / Pho / Buns","t":"","x":"Enjoy a bowl of authentic Vietnamese Phở made with rice noodles. With its soft, silky texture that stays firm in the hot broth and a chewiness that satisfies every bite. Disclaimer:…","cta":"View IG","f":"image","ps":null,"pt":"Unscored","da":36,"st":"inactive","sd":"2026-07-31","lang":"en","url":"https://app.gethookd.ai/share/ad/134889344?signature=e423224077c7301381acf45867220d0d033eeb3d537b5d7388c18861b7500b71","plat":["instagram"]},{"id":134889493,"b":"Phở Story USA","c":"Noodles / Pho / Buns","t":"","x":"Enjoy a bowl of authentic Vietnamese Phở made with rice noodles. With its soft, silky texture that stays firm in the hot broth and a chewiness that satisfies every bite. Disclaimer:…","cta":"See Details","f":"image","ps":null,"pt":"Unscored","da":32,"st":"inactive","sd":"2026-08-04","lang":"en","url":"https://app.gethookd.ai/share/ad/134889493?signature=dbfeb96e66a629fe7416e7eb4aab3fc101aa0b934788023efff26e6275d79835","plat":["facebook"]},{"id":141239269,"b":"Bep-pa","c":"Noodles / Pho / Buns","t":"Ready Fast.","x":"Gastonia's pho, Pad Thai, sushi, fried rice, Vietnamese, Thai, hibachi restaurant. Fast delivery, easy pickup, always fresh.","cta":"See Menu","f":"carousel","ps":null,"pt":"Unscored","da":27,"st":"inactive","sd":"2026-08-09","lang":"en","url":"https://app.gethookd.ai/share/ad/141239269?signature=8f2558a74d35b724eaeb0ca466cd99cbd8133a4cae62d1fc302ff4508b8d7833","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":142439572,"b":"Bep-pa","c":"Noodles / Pho / Buns","t":"Ready Fast.","x":"Gastonia's pho, Pad Thai, sushi, fried rice, Vietnamese, Thai, hibachi restaurant. Fast delivery, easy pickup, always fresh.","cta":"See Menu","f":"carousel","ps":null,"pt":"Unscored","da":26,"st":"inactive","sd":"2026-08-10","lang":"en","url":"https://app.gethookd.ai/share/ad/142439572?signature=2538daa37ecd9490f4929b6e0ce9c1d12d2970f8d8370189822e175f8cd7f189","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":120259334,"b":"Phở Story USA","c":"Noodles / Pho / Buns","t":"","x":"Enjoy a bowl of authentic Vietnamese Phở made with rice noodles. With its soft, silky texture that stays firm in the hot broth and a chewiness that satisfies every bite. Disclaimer:…","cta":"View IG","f":"image","ps":null,"pt":"Unscored","da":65,"st":"inactive","sd":"2026-07-02","lang":"en","url":"https://app.gethookd.ai/share/ad/120259334?signature=952bd9f9eeb9ebd1c0a03c20c6b7581e690920304d689371d8e7d61c81f8dcb1","plat":["instagram"]},{"id":120025013,"b":"Lucky Seafood Supermarket 2 Garden Grove CA","c":"Noodles / Pho / Buns","t":"Lucky Seafood Supermarket 2 Garden Grove CA","x":"🌟 SALE CONTINUE UNTIL 6/11🌟 LUCKY SEAFOOD 2 SUPERMARKET ADDRESS: 13220 HARBOR BLVD, GARDEN GROVE, CA 92843 PHONE: 714-741-0628 🍜 QUẦY THỰC PHẨM KHÔ Đa dạng các loại mì, gia vị, đồ hộp và…","cta":"Call Now","f":"image","ps":null,"pt":"Unscored","da":87,"st":"inactive","sd":"2026-06-10","lang":"en","url":"https://app.gethookd.ai/share/ad/120025013?signature=89dd566aae63ab0fa5bb575b92061f987a25ab28cd1f4494aff638654ff3f084","plat":["facebook","instagram"]},{"id":120259721,"b":"Phở Story USA","c":"Noodles / Pho / Buns","t":"","x":"Enjoy a bowl of authentic Vietnamese Phở made with rice noodles. With its soft, silky texture that stays firm in the hot broth and a chewiness that satisfies every bite. Disclaimer:…","cta":"Contact Us","f":"image","ps":null,"pt":"Unscored","da":58,"st":"inactive","sd":"2026-07-09","lang":"en","url":"https://app.gethookd.ai/share/ad/120259721?signature=96a1668c5162ac29797c17a3f72e8193a49e6bf00699823ca68ccdcb269d43fd","plat":["instagram"]},{"id":134634744,"b":"Far East Alchemy","c":"Coffee","t":"Blending Fitness with Nostalgia 🫶","x":"Brand New Vietnamese Coffee Protein (Cà Phê Sữa Đá)! 👀 Come for the pump, stay for the gains 😋 Available now!","cta":"Shop Now","f":"video","ps":100,"pt":"Winning","da":227,"st":"active","sd":"2026-01-21","lang":"en","url":"https://app.gethookd.ai/share/ad/134634744?signature=50e53225aa2211e8918d1a9a06cbe31215856caf287d0298cdc8269e15c5e898","plat":["facebook","instagram","audience_network","messenger"]},{"id":108945853,"b":"Asian Pantry Australia","c":"Coffee","t":"The authentic way to viet coffee","x":"Make viet coffee the authentic way","cta":"Shop Now","f":"carousel","ps":100,"pt":"Winning","da":118,"st":"active","sd":"2026-05-10","lang":"en","url":"https://app.gethookd.ai/share/ad/108945853?signature=35dbd1ccf5170294d076f591eb51f3ca93028c11ae789859f6de2fffba05a99e","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":144954244,"b":"Superjellyco","c":"Coffee","t":"Your protein with banana, cinnamon, and REAL coffee ☕","x":"Your protein tastes like a banana bread latte now. Banana, cinnamon, and REAL Vietnamese coffee. One scoop, 23g, zero chalk. Barista mode from your kitchen ☕ Brew Yours at Home","cta":"Shop Now","f":"video","ps":96,"pt":"Winning","da":23,"st":"active","sd":"2026-08-13","lang":"en","url":"https://app.gethookd.ai/share/ad/144954244?signature=ca0e68bddb7bb924882c6cdcc3dfd9f3451b9141916aa503a33bf6c38dbb3305","plat":["facebook","instagram","messenger","threads"]},{"id":133178684,"b":"Cafesaigonusa.com","c":"Coffee","t":"Try Vietnamese Coffee The Right Way","x":"🎁 What if your very first cup of Vietnamese coffee was so good it completely changed what you expected from every cup after it? That's not a hypothetical. That's what happens when people…","cta":"Shop Now","f":"video","ps":86,"pt":"Optimized","da":77,"st":"active","sd":"2026-06-20","lang":"en","url":"https://app.gethookd.ai/share/ad/133178684?signature=fbfcbc6bbda8c41f00649367c194465dd1649e718f9106bba4b0d9ce40edc2e5","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":132507474,"b":"kilobeaters_official","c":"Coffee","t":"Coffee Mocha + 32g Protein","x":"🚀 NEW LAUNCH: Vietnamese Coffee Mocha Whey Protein Isolate ✅ 32g Protein per serving ✅ Whey Protein Isolate ✅ No Fillers. No Nasties. Make your protein feel like coffee time 😋 ⏳ Limited…","cta":"Order Now","f":"video","ps":86,"pt":"Optimized","da":192,"st":"active","sd":"2026-02-25","lang":"en","url":"https://app.gethookd.ai/share/ad/132507474?signature=8085c65d341271b2681bca4b90e7fd15bffdb1d4fd58cb96b80eaa1347c75380","plat":["facebook","instagram","messenger","threads"]},{"id":132507479,"b":"kilobeaters_official","c":"Coffee","t":"Choose Flavour. Hit Upto 35g Protein.","x":"🥤 Turning protein into delicious smoothies! Get upto 35g high-quality protein with KILOBEATERS 100% Whey Isolate. ✅ No gums | No fillers | No bulking agents Pick your flavour: 🍫 Chocolate |…","cta":"Order Now","f":"image","ps":86,"pt":"Optimized","da":145,"st":"active","sd":"2026-04-13","lang":"en","url":"https://app.gethookd.ai/share/ad/132507479?signature=9f233c0b02e394b24f8bcbda9b122f7ed363bf94048ea2f96c917b97d7e692c9","plat":["facebook","instagram","messenger","threads"]},{"id":126739335,"b":"Asian Pantry Australia","c":"Coffee","t":"Trung Nguyen","x":"Make Vietnamese coffee the authentic way. Experience rich, smooth flavors with every sip.","cta":"Shop Now","f":"image","ps":86,"pt":"Optimized","da":48,"st":"active","sd":"2026-07-19","lang":"en","url":"https://app.gethookd.ai/share/ad/126739335?signature=650503af1aa049e73bfc15f2bf2abf10cf39c463bc8fc62760397dd6337b3722","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":130344712,"b":"The Fluent Report","c":"Coffee","t":"I learned Vietnamese for one reason. Her name is Kim.","x":"I booked the trip three weeks after a rough patch at work, on a Tuesday evening, slightly impulsively, the way you sometimes make the best decisions of your life. Solo, ten days, Ho Chi…","cta":"See Details","f":"image","ps":80,"pt":"Growing","da":89,"st":"active","sd":"2026-06-08","lang":"en","url":"https://app.gethookd.ai/share/ad/130344712?signature=dc8d850e5d99f5118998e5b8e45f1363ccc026329e99fa480a460448a30fd5b3","plat":["facebook","instagram","messenger","threads"]},{"id":148477417,"b":"POCA","c":"Coffee","t":"","x":"Vietnamese style iced Latte at home ✨ new obsession: sweetened condensed milk ☕️🤎 #coffeetok #coldfoam #coffeeathome #vietnameselatte #icedlatte *not sponsored just obsessed with…","cta":"Shop Now","f":"video","ps":74,"pt":"Growing","da":19,"st":"active","sd":"2026-08-17","lang":"en","url":"https://app.gethookd.ai/share/ad/148477417?signature=b1737b0d69ce7e643acba105140fbb1ecf153593596b8c28700b47f703681f2f","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":139464465,"b":"Pioka - Boba Tea Supply","c":"Coffee","t":"Ever tried Vietnamese Egg Coffee? ☕✨","x":"Make Vietnamese Egg Coffee part of your menu. ☕✨ With Pioka’s Vietnamese Egg Coffee Foam Powder, boba and café owners can add this iconic drink to the menu without fresh eggs or complicated…","cta":"Message","f":"video","ps":74,"pt":"Growing","da":30,"st":"active","sd":"2026-08-06","lang":"en","url":"https://app.gethookd.ai/share/ad/139464465?signature=8e055db3cebdccaf1f1bd591c8597eb54ccbb0b2c6d962ace48160b978b8fc92","plat":["facebook","instagram","audience_network","messenger"]},{"id":122394331,"b":"ONICI Ăn Vặt Tại Mỹ","c":"Coffee","t":"Bánh Mix Đài Loan (Taiwanese Variety Snack Box)","x":"Pure, pillowy perfection in every bite. 🍰✨ • Order here: https://www.onicifood.com/products/banh-gongto-1kg-10-cai Meet the newest addition to our collection: our ultra-soft,…","cta":"Order Now","f":"carousel","ps":74,"pt":"Growing","da":68,"st":"active","sd":"2026-06-29","lang":"en","url":"https://app.gethookd.ai/share/ad/122394331?signature=b2d2878f6562548e3e380da3ef8855d9d449fd6baac07bbb922a2ec2a96c0fbc","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":159923721,"b":"Habidade","c":"Coffee","t":"","x":"Barish outside, Vietnamese coffee inside ☕🌧️ : the kind of vibe you don’t plan, but never forget. Habidade Vietnamese A signature blend of high-elevation Arabica and award-winning Robustas…","cta":"View IG","f":"video","ps":74,"pt":"Growing","da":67,"st":"active","sd":"2026-06-30","lang":"en","url":"https://app.gethookd.ai/share/ad/159923721?signature=5214e3fd4d5f37460ee2d7d9fbb5d4ec7e3aa2c57999d891bc18c473f7f16577","plat":["instagram"]},{"id":132507508,"b":"kilobeaters_official","c":"Coffee","t":"Choose Flavour. Hit Upto 35g Protein.","x":"🥤 Turning protein into delicious smoothies! Get upto 35g high-quality protein with KILOBEATERS 100% Whey Isolate. ✅ No gums | No fillers | No bulking agents Pick your flavour: 🍫 Chocolate |…","cta":"Order Now","f":"image","ps":74,"pt":"Growing","da":132,"st":"active","sd":"2026-04-26","lang":"en","url":"https://app.gethookd.ai/share/ad/132507508?signature=701014b8b916cf5d79d3f480832d4ae0dfd534f97d3d159b61a618067e2c6fee","plat":["facebook","instagram","messenger","threads"]},{"id":108947521,"b":"Asian Pantry Australia","c":"Coffee","t":"Trung Nguyen","x":"Make Vietnamese coffee the authentic way. Experience rich, smooth flavors with every sip.","cta":"Shop Now","f":"image","ps":74,"pt":"Growing","da":117,"st":"active","sd":"2026-05-11","lang":"en","url":"https://app.gethookd.ai/share/ad/108947521?signature=b26f10eb0cf68e41fa72d6d011edbc4bed94eac4625c2ed9ee29872f6508867a","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":130344722,"b":"The Fluent Report","c":"Coffee","t":"I learned Vietnamese for one reason. Her name is Kim.","x":"I booked the trip three weeks after a rough patch at work, on a Tuesday evening, slightly impulsively, the way you sometimes make the best decisions of your life. Solo, ten days, Ho Chi…","cta":"See Details","f":"image","ps":66,"pt":"Growing","da":81,"st":"active","sd":"2026-06-16","lang":"en","url":"https://app.gethookd.ai/share/ad/130344722?signature=b8bfb01ee253840f3138b2585039c61a39efc15ea92d53e457d57a02160075c7","plat":["facebook","instagram","messenger","threads"]},{"id":148181972,"b":"Superjellyco","c":"Coffee","t":"Your milk tea and coffee now come with 23g of protein 🧋","x":"Your afternoon milk tea and morning coffee just started pulling double duty. Strawberry Milk Tea and Vietnamese Coffee: two new flavors with 23g of whey protein isolate per scoop. The…","cta":"Shop Now","f":"image","ps":64,"pt":"Growing","da":20,"st":"active","sd":"2026-08-16","lang":"en","url":"https://app.gethookd.ai/share/ad/148181972?signature=b6368a66abff0d9498522a1fa968642f984400e43f6c6934bea787ac4a435958","plat":["facebook","instagram","messenger"]},{"id":154266430,"b":"JustPour","c":"Coffee","t":"Ditch Instant. Switch to JustPour.","x":"Instant coffee had a good run. Upgrade to rich espresso concentrate and make café-style drinks like Vietnamese Iced Coffee, Salted Caramel Latte and Dalgona Cold Coffee—without an espresso…","cta":"Shop Now","f":"image","ps":60,"pt":"Scaling","da":12,"st":"active","sd":"2026-08-24","lang":"en","url":"https://app.gethookd.ai/share/ad/154266430?signature=9184705bde5171b7f1ea970fc48bbecaf5c5ae09ca8b3c57799894b1b9c77a63","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":134633484,"b":"Far East Alchemy","c":"Coffee","t":"Whey Protein Bundle - 5 x 500G Protein Bundle","x":"\"Wait... is this from Springvale?\" 👀 Watch people try our Vietnamese Coffee Protein Can for the first time. ☕ Authentic Vietnamese coffee flavour 💪 High protein 🥛 No chalky texture 🏃‍♀️…","cta":"Shop Now","f":"carousel","ps":58,"pt":"Scaling","da":59,"st":"active","sd":"2026-07-08","lang":"en","url":"https://app.gethookd.ai/share/ad/134633484?signature=0f66a8afb8ef59af2bf0a24db33d95080be419ae759b86e56e40532d146b5d12","plat":["facebook","instagram","audience_network","messenger"]},{"id":109326929,"b":"d'Annam","c":"Coffee","t":"✨ Find your signature scent with our Discovery Set: White Rice, Vietnamese Coffee, Da Lat…","x":"🇻🇳 𝐂𝐡𝐚𝐩𝐭𝐞𝐫 𝟏: 𝐄𝐧𝐜𝐡𝐚𝐧𝐭𝐢𝐧𝐠 𝐕𝐢𝐞𝐭𝐧𝐚𝐦 Explore our unique fragrance collection and find your signature scent today. Available to try with our Discovery Set.","cta":"See Details","f":"video","ps":58,"pt":"Scaling","da":99,"st":"active","sd":"2026-05-29","lang":"en","url":"https://app.gethookd.ai/share/ad/109326929?signature=e75dbc4a39faed3ac56f09c4bc7f5cabc36c5d3beb4cec82db81bf65bab8b6ff","plat":["facebook","instagram","audience_network","messenger"]},{"id":109326925,"b":"d'Annam","c":"Coffee","t":"✨ Find your signature scent with our Discovery Set: White Rice, Vietnamese Coffee, Da Lat…","x":"🇻🇳 𝐂𝐡𝐚𝐩𝐭𝐞𝐫 𝟏: 𝐄𝐧𝐜𝐡𝐚𝐧𝐭𝐢𝐧𝐠 𝐕𝐢𝐞𝐭𝐧𝐚𝐦 Explore our unique fragrance collection and find your signature scent today. Available to try with our Discovery Set.","cta":"See Details","f":"video","ps":58,"pt":"Scaling","da":99,"st":"active","sd":"2026-05-29","lang":"en","url":"https://app.gethookd.ai/share/ad/109326925?signature=90a8084aa542e7c5a03789753b109b16db35c9f3f8f4d1445087b487da3a35b9","plat":["facebook","instagram","audience_network","messenger"]},{"id":150301522,"b":"Nguyen Coffee Supply","c":"Coffee","t":"Direct Trade Vietnamese Coffee","x":"Direct trade Vietnamese coffee — sourced straight from the farm, roasted fresh. Shop the collection.","cta":"Shop Now","f":"video","ps":55,"pt":"Scaling","da":17,"st":"active","sd":"2026-08-19","lang":"en","url":"https://app.gethookd.ai/share/ad/150301522?signature=32361c5bc06329f91df5ca3ad49ac3a0d061ba7483fbc7be7835bacc228e7681","plat":["facebook","instagram","messenger","threads"]},{"id":168391957,"b":"Superjellyco","c":"Coffee","t":"Your morning coffee now comes with 23g of protein 🧋","x":"Your alarm goes off and you already know the move. Vietnamese Coffee with 23g of premium whey protein isolate steps in for your usual morning cup. Caffeine, protein, and real flavor in a…","cta":"Shop Now","f":"video","ps":38,"pt":"Testing","da":7,"st":"active","sd":"2026-08-29","lang":"en","url":"https://app.gethookd.ai/share/ad/168391957?signature=d88b985a28b8c40206d981cda5dbae8d437b7bab11e0c9bdaa202f0fd85718ec","plat":["facebook","instagram","messenger"]},{"id":154266453,"b":"JustPour","c":"Coffee","t":"Vietnamese Iced Coffee in 30 Seconds","x":"Skip the ₹250 café run. All you need is condensed milk, milk and JustPour to make a rich Vietnamese Iced Coffee at home in under 30 seconds. Better coffee. Less effort.","cta":"Shop Now","f":"image","ps":32,"pt":"Testing","da":12,"st":"active","sd":"2026-08-24","lang":"en","url":"https://app.gethookd.ai/share/ad/154266453?signature=827049063cfa343c9dc1fbeedc28e2909c6abe0bbb44f10690318a32911a5cc8","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":164896448,"b":"Nguyen Coffee Supply","c":"Coffee","t":"Direct Trade Vietnamese Coffee","x":"Direct trade Vietnamese coffee — sourced straight from the farm, roasted fresh. Shop the collection.","cta":"Shop Now","f":"video","ps":26,"pt":"Testing","da":9,"st":"active","sd":"2026-08-27","lang":"en","url":"https://app.gethookd.ai/share/ad/164896448?signature=8afda42dba3f3758092b1de2df4f94938b869ac1464b6b1b436e3fe08f5709bb","plat":["facebook","instagram","messenger","threads"]},{"id":169757071,"b":"Cafesaigonusa.com","c":"Coffee","t":"Vietnamese Robusta — One Cup Is Enough","x":"😤 Still drinking 3 cups of coffee and still tired? You're not the problem. Your coffee is. Here's what nobody puts on their packaging. Arabica beans — used by Starbucks, Dunkin, and…","cta":"Shop Now","f":"carousel","ps":24,"pt":"Testing","da":4,"st":"active","sd":"2026-09-01","lang":"en","url":"https://app.gethookd.ai/share/ad/169757071?signature=cf13e0fb418879b66f545fba0046acdca565cf1827796c27976a414b1b9ba392","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":170773627,"b":"Bazan Coffee Global","c":"Coffee","t":"","x":"BEST WITH MILK. TOO STRONG TO VANISH 𝗕𝗲𝗰𝗮𝘂𝘀𝗲 𝗰𝗼𝗳𝗳𝗲𝗲 𝘀𝗵𝗼𝘂𝗹𝗱 𝗻𝗲𝘃𝗲𝗿 𝗱𝗶𝘀𝗮𝗽𝗽𝗲𝗮𝗿 𝘁𝗵𝗲 𝗺𝗼𝗺𝗲𝗻𝘁 𝗺𝗶𝗹𝗸 𝗵𝗶𝘁𝘀. Too Strong is built differently. Made from 100% premium Vietnamese Robusta, this dark roast…","cta":"Shop Now","f":"carousel","ps":20,"pt":"Testing","da":2,"st":"active","sd":"2026-09-03","lang":"en","url":"https://app.gethookd.ai/share/ad/170773627?signature=d020f21ff1fda5b24323193fba175f23005f2b0049f4e1b96348b5ac3dcae7b6","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":169406854,"b":"Far East Alchemy","c":"Coffee","t":"Limited - Durian Milk Tea Protein","x":"\"Wait... is this from Springvale?\" 👀 Watch people try our Vietnamese Coffee Protein Can for the first time. ☕ Authentic Vietnamese coffee flavour 💪 High protein 🥛 No chalky texture 🏃‍♀️…","cta":"Shop Now","f":"carousel","ps":16,"pt":"Testing","da":4,"st":"active","sd":"2026-09-01","lang":"en","url":"https://app.gethookd.ai/share/ad/169406854?signature=4077508174636ac9a7f8c0370ba0469a4ac1fe52b6730bf09d4a18f4491f97e9","plat":["facebook","instagram","audience_network","messenger"]},{"id":170527778,"b":"Nguyen Coffee Supply","c":"Coffee","t":"Vietnamese Coffee, Brooklyn Roasted","x":"We roast Vietnamese coffee in Brooklyn. Right now, every order of $60 or more comes with our Glass Coffee Server. Just add it to your cart.","cta":"Shop Now","f":"image","ps":14,"pt":"Testing","da":3,"st":"active","sd":"2026-09-02","lang":"en","url":"https://app.gethookd.ai/share/ad/170527778?signature=705d235f17aea7803d2bb4a665f89ec84e56c2c19ff1e0d5bc40d90c4398edba","plat":["facebook","instagram","messenger","whatsapp","threads"]},{"id":170411464,"b":"Blue Tokai Coffee Roasters","c":"Coffee","t":"","x":"You know a café is special when you end up staying longer than you planned! I ordered my favourite, the freshly brewed Vietnamese Iced Coffee, crafted using specialty coffee beans sourced…","cta":"See Details","f":"video","ps":14,"pt":"Testing","da":3,"st":"active","sd":"2026-09-02","lang":"en","url":"https://app.gethookd.ai/share/ad/170411464?signature=93b83d98d26be9527c173392b997348ed6a62f3e5e868c509056226440d31dbd","plat":["facebook","instagram"]},{"id":171470625,"b":"JustPour","c":"Coffee","t":"One Coffee. Endless Possibilities.","x":"Why buy a different coffee for every mood? 👀 With JustPour, one bottle of espresso concentrate can become iced coffee, lattes, Vietnamese coffee, desserts & more. Just pour. Mix. Make it…","cta":"Shop Now","f":"image","ps":12,"pt":"Testing","da":2,"st":"active","sd":"2026-09-03","lang":"en","url":"https://app.gethookd.ai/share/ad/171470625?signature=7c461e5de0de8c2f4c614ea4319894fa3120a8291c0b736a58ac1d7f8290d881","plat":["facebook","instagram"]},{"id":171470627,"b":"JustPour","c":"Coffee","t":"Vietnamese Coffee. At Home.","x":"Your favourite Vietnamese coffee shouldn’t require a trip to the café. 🇻🇳☕️ With JustPour, make an authentic-style Vietnamese coffee at home in 30 seconds. Just pour, add condensed milk &…","cta":"Shop Now","f":"image","ps":12,"pt":"Testing","da":2,"st":"active","sd":"2026-09-03","lang":"en","url":"https://app.gethookd.ai/share/ad/171470627?signature=c93d1a564b03137f4bff010aaacfe468c65306b8d6e67299f4c6241add17c98d","plat":["facebook","instagram"]},{"id":171470622,"b":"JustPour","c":"Coffee","t":"One Coffee. Endless Possibilities.","x":"Your coffee at home should do more than just wake you up. With JustPour, one bottle can become Vietnamese coffee, iced coffee, lattes, americanos & more. One concentrate. Endless coffee…","cta":"Shop Now","f":"image","ps":12,"pt":"Testing","da":2,"st":"active","sd":"2026-09-03","lang":"en","url":"https://app.gethookd.ai/share/ad/171470622?signature=7c9a4b3ad1e810200cad935dc4d5129641c8ec2fc91c066ee5167835cf3665a8","plat":["facebook","instagram"]},{"id":122858964,"b":"New Breed Coffee","c":"Coffee","t":"","x":"Think you know Vietnamese Coffee? Explorer is a speciality Honey Robusta with notes of Ferroro Rocher, honey and black tea. Freshly roasted in the UK. Get 20% off your first order.","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":79,"st":"inactive","sd":"2026-06-18","lang":"en","url":"https://app.gethookd.ai/share/ad/122858964?signature=fc7ac6f790543d43af3cf76359a61fe181ca6f15419cafbf4ed6c38b597ce28b","plat":["instagram"]},{"id":133272178,"b":"Saigon Savory-Huong Vi Saigon","c":"Meat Snacks (Jerky)","t":"Saigon Savory Huong Vi Saigon","x":"Gói Vị cay mặn của chúng tôi có ba món thịt bò khô cay, hoàn hảo cho những ai thích ănh hương vị đậm đà.😛","cta":"Shop Now","f":"image","ps":100,"pt":"Winning","da":270,"st":"active","sd":"2025-12-09","lang":"vi","url":"https://app.gethookd.ai/share/ad/133272178?signature=bb8e1a5906bbc651d381c4991981a8281e8e7fdf75243d83455438aabda38a5e","plat":["facebook","instagram","audience_network","threads"]},{"id":133272268,"b":"Saigon Savory-Huong Vi Saigon","c":"Meat Snacks (Jerky)","t":"Saigon Savory Huong Vi Saigon","x":"Our Savory Spicy Bundle features our three spicy beef jerkies, perfect for those who like snacking boldly!","cta":"Shop Now","f":"image","ps":86,"pt":"Optimized","da":86,"st":"active","sd":"2026-06-11","lang":"en","url":"https://app.gethookd.ai/share/ad/133272268?signature=7dfb315a54366d196ae1d72739d72e3f885d6cf710e79141412491bd17f9da7b","plat":["facebook","instagram","audience_network","threads"]},{"id":133272253,"b":"Saigon Savory-Huong Vi Saigon","c":"Meat Snacks (Jerky)","t":"Saigon Savory Huong Vi Saigon","x":"Gói vị ngọt mặn của chúng tôi có các loại thịt khô với sự cân bằng hoàn hảo giữa vị mặn và vị ngọt.😛","cta":"Shop Now","f":"image","ps":86,"pt":"Optimized","da":190,"st":"active","sd":"2026-02-27","lang":"vi","url":"https://app.gethookd.ai/share/ad/133272253?signature=18cd56f05f235206df7e6a7f740ebf2556155f5ed9b0c5637180abd7f22a09aa","plat":["facebook","instagram","audience_network","threads"]},{"id":133272295,"b":"Saigon Savory-Huong Vi Saigon","c":"Meat Snacks (Jerky)","t":"Saigon Savory Huong Vi Saigon","x":"Our Savory Sensations Bundle features 6 of our premium jerkies, seasoned with authentic Vietnamese spices such as Vietnamese curry, chili peppers, and lemongrass.😍🍖","cta":"Shop Now","f":"image","ps":86,"pt":"Optimized","da":53,"st":"active","sd":"2026-07-14","lang":"en","url":"https://app.gethookd.ai/share/ad/133272295?signature=40e6bd1e373d0d96b033c01fc226f87f202b055b3316130b05f8990e5678d6f4","plat":["facebook","instagram","audience_network","threads"]},{"id":139512210,"b":"Saigon Savory-Huong Vi Saigon","c":"Meat Snacks (Jerky)","t":"Saigon Savory Huong Vi Saigon","x":"Our Savory Sweetness Bundle features jerkies with the perfect balance of saltiness and sweetness.","cta":"Shop Now","f":"image","ps":74,"pt":"Growing","da":30,"st":"active","sd":"2026-08-06","lang":"en","url":"https://app.gethookd.ai/share/ad/139512210?signature=d5eb30e775a857bba19d38528061b88aaa340293906e12760232b4218a90f9e1","plat":["facebook","instagram","audience_network","threads"]},{"id":133272986,"b":"Saigon Savory-Huong Vi Saigon","c":"Meat Snacks (Jerky)","t":"Saigon Savory Huong Vi Saigon","x":"Our Savory Spicy Bundle features our three spicy beef jerkies, perfect for those who like snacking boldly!","cta":"Shop Now","f":"image","ps":74,"pt":"Growing","da":37,"st":"active","sd":"2026-07-30","lang":"en","url":"https://app.gethookd.ai/share/ad/133272986?signature=0305347b8e1f77a8a64d0a0e3a49ae715f419bee817b8038f82a5ed0d5ee3688","plat":["facebook","instagram","audience_network","threads"]},{"id":136289994,"b":"Saigon Savory-Huong Vi Saigon","c":"Meat Snacks (Jerky)","t":"BIGGEST SALE NOW FOR A LIMITED TIME!","x":"We make the best Vietnamese-style jerky in the US! Get A HUGE DISCOUNT and FREE shipping today.🥰 Chúng tôi làm món thịt khô ngon nhất tại Mỹ! Hãy nhận ưu đãi giảm giá và miễn phí vận chuyển…","cta":"Shop Now","f":"video","ps":66,"pt":"Growing","da":40,"st":"active","sd":"2026-07-27","lang":"en","url":"https://app.gethookd.ai/share/ad/136289994?signature=328027d8a8fb9ec0ae996c9d296ebd86e4bbcea05ade9b4c80a073bf94d2b123","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":169769752,"b":"Saigon Savory-Huong Vi Saigon","c":"Meat Snacks (Jerky)","t":"Get free shipping and 10% off today!","x":"Saigon Savory: where quality meets authenticity. Saigon Savory: nơi chất lượng đáp ứng sự chân thực.","cta":"Shop Now","f":"video","ps":24,"pt":"Testing","da":4,"st":"active","sd":"2026-09-01","lang":"en","url":"https://app.gethookd.ai/share/ad/169769752?signature=328cb14828486305241a61ef24ee3b97d011f2d8f4720614c9d23888534e751e","plat":["facebook","instagram","audience_network","whatsapp","threads"]},{"id":127543407,"b":"Weee_Vietnamese","c":"Asian Grocery Delivery (Weee!)","t":"Use code: FACEBOOK10 for $10 off your first order","x":"🥟 Tự làm hoành thánh tôm tại nhà với tôm bóc vỏ tươi ngon, tiện lợi! 🛒 Tôm bóc vỏ, vỏ hoành thánh và tất cả nguyên liệu đều có trên Weee! Dung FACEBOOK10 de giam $10 cho moi don trong 2 don…","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":46,"st":"inactive","sd":"2026-07-21","lang":"vi","url":"https://app.gethookd.ai/share/ad/127543407?signature=9a3598d4b7a30bdcfd31a3653fc023f4e0b7c49aab705eaed9a8bcd644625817","plat":["facebook","instagram","messenger","threads"]},{"id":123489287,"b":"Weee_Vietnamese","c":"Asian Grocery Delivery (Weee!)","t":"","x":"🍧 Chè Liên Đà Nẵng: Món chè “quốc dân” ăn là ghiền nay đã có trên Weee! 🥥 Chè Thái sầu riêng béo ngậy, topping đầy đặn, ngọt vừa, thơm chuẩn vị Đà Nẵng 👉 Đi chợ Weee! ngay để được giảm $20…","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":81,"st":"inactive","sd":"2026-06-16","lang":"vi","url":"https://app.gethookd.ai/share/ad/123489287?signature=83803cc8c6d2863167f768e3dc2c4b7371f366d8b116627e498d81e89522cb79","plat":["facebook","instagram","messenger","threads"]},{"id":123488708,"b":"Weee_Vietnamese","c":"Asian Grocery Delivery (Weee!)","t":"Use code: FACEBOOK10 for $10 off your first order","x":"Chè Thái season starts here. Shop jackfruit, lychee, longan, pandan jelly, coconut gel, and coconut milk on Weee! Use code: FACEBOOK10 for $10 off your first order","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":82,"st":"inactive","sd":"2026-06-15","lang":"en","url":"https://app.gethookd.ai/share/ad/123488708?signature=6aab3fbcfb627f24952d5bf439b68d25b457087e5f202f8ebe170fd30c062a2c","plat":["facebook","instagram","messenger","threads"]},{"id":127543337,"b":"Weee_Vietnamese","c":"Asian Grocery Delivery (Weee!)","t":"Dinner in 5 + $10 Off","x":"Dinner plans, solved. Say Lala noodles are ready in minutes when you want something warm, easy, and satisfying. Order on Weee and use code FACEBOOK10 for $10 off your first order.","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":46,"st":"inactive","sd":"2026-07-21","lang":"en","url":"https://app.gethookd.ai/share/ad/127543337?signature=30cc6600008c61924f9fd78ddf1f88cd68122ff220eadfe56fbc87320fd802ed","plat":["facebook","instagram","messenger","threads"]},{"id":127543302,"b":"Weee_Vietnamese","c":"Asian Grocery Delivery (Weee!)","t":"Big Cravings + $10 Off","x":"Big noodle cravings? Say Lala noodles bring bold, slurpable comfort home in minutes. Order on Weee and use code FACEBOOK10 for $10 off your first order.","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":46,"st":"inactive","sd":"2026-07-21","lang":"en","url":"https://app.gethookd.ai/share/ad/127543302?signature=df778ef35abf31cf9370fce0cdb3ccfe52b7fdf513a6d8a0c460231ab6f04f35","plat":["facebook","instagram","messenger","threads"]},{"id":123489071,"b":"Weee_Vietnamese","c":"Asian Grocery Delivery (Weee!)","t":"Use code: FACEBOOK10 for $10 off your first order","x":"Meet your new favorite food app, Weee! — the largest online Asian supermarket from your phone. 🌟 Hard-to-find products 🚛 Free, fast delivery 📲 $10 off your first order Use code: FACEBOOK10…","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":80,"st":"inactive","sd":"2026-06-17","lang":"en","url":"https://app.gethookd.ai/share/ad/123489071?signature=1bac0b184eae9d74b15ff66cbe6e27b4b0c5d76e9bcf72011c6bf2fb6264e4c7","plat":["facebook","instagram","messenger","threads"]},{"id":123489012,"b":"Weee_Vietnamese","c":"Asian Grocery Delivery (Weee!)","t":"Use code: FACEBOOK10 for $10 off your first order","x":"Meet your new favorite food app, Weee! — the largest online Asian supermarket from your phone. 🌟 Hard-to-find products 🚛 Free, fast delivery 📲 $10 off your first order Use code: FACEBOOK10…","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":81,"st":"inactive","sd":"2026-06-16","lang":"en","url":"https://app.gethookd.ai/share/ad/123489012?signature=d9bb7651aa07c3cd8c961ee950cdc39effb885ccc824074487dbb6cef499a9d7","plat":["facebook","instagram","messenger","threads"]},{"id":123488674,"b":"Weee_Vietnamese","c":"Asian Grocery Delivery (Weee!)","t":"Use code: FACEBOOK10 for $10 off your first order","x":"Meet your new favorite food app, Weee! — the largest online Asian supermarket from your phone. 🌟 Hard-to-find products 🚛 Free, fast delivery 📲 $10 off your first order Use code: FACEBOOK10…","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":81,"st":"inactive","sd":"2026-06-16","lang":"en","url":"https://app.gethookd.ai/share/ad/123488674?signature=1fc77a2c73f67d46defbd23e920cb38309bf8fbd18de1b3fa93f83313382e775","plat":["facebook","instagram","messenger","threads"]},{"id":138368355,"b":"SILKY GEM","c":"Restaurant / Foodservice","t":"100% Vegan & Gluten-Free","x":"For first-timers and longtime fans alike, there's always something new to try. Explore our world of Crystal Candy Silky Gem crystal candies are inspired by Vietnamese Lunar new year…","cta":"Order Now","f":"image","ps":74,"pt":"Growing","da":31,"st":"active","sd":"2026-08-05","lang":"en","url":"https://app.gethookd.ai/share/ad/138368355?signature=7ad53c84628066d2049db0fdbfcbb39e0a10e4dd01424db90d348156aba70dce","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":148983425,"b":"SILKY GEM","c":"Restaurant / Foodservice","t":"100% Vegan & Gluten-Free","x":"For first-timers and longtime fans alike, there's always something new to try. Explore our world of Crystal Candy Silky Gem crystal candies are inspired by Vietnamese Lunar new year…","cta":"Order Now","f":"image","ps":70,"pt":"Growing","da":20,"st":"active","sd":"2026-08-16","lang":"en","url":"https://app.gethookd.ai/share/ad/148983425?signature=c4e025d6c183f708670a0a46f36a6fb634c9a3e00204e39bee567e22612a6b69","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":121097540,"b":"Blossom Vegetarian Renton","c":"Restaurant / Foodservice","t":"Blossom Vegetarian: Best Vietnamese Food","x":"Craving authentic Vietnamese cuisine in Renton? Head to Blossom Vegetarian for the best vegan & veggie options! Try our signature dishes today and taste the difference!","cta":"Learn More","f":"image","ps":null,"pt":"Unscored","da":269,"st":"inactive","sd":"2025-12-10","lang":"en","url":"https://app.gethookd.ai/share/ad/121097540?signature=ebfe032ba737f690dd3a7fa9e71c71a79079affa89eee18904b0841d202c697a","plat":["facebook","instagram","messenger"]},{"id":120338931,"b":"Belfast Telegraph","c":"Restaurant / Foodservice","t":"‘I spent my early years in foster care while my parents worked 24/7’: Meet the cafe owner…","x":"In our Meaning of Life series, businessman William Chan speaks to Áine Toner about expansion and sharing his culture.","cta":"Subscribe","f":"image","ps":null,"pt":"Unscored","da":204,"st":"inactive","sd":"2026-02-13","lang":"en","url":"https://app.gethookd.ai/share/ad/120338931?signature=833a2e14823c7cd00444e377d1ab86da168bf5ee05eeba4308705d8b4acf8512","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":127627429,"b":"Freshlay Farms Golden Yolker","c":"Restaurant / Foodservice","t":"Fried Egg Bánh Mì Recipe","x":"Fried egg bánh mì is a popular variation on the Vietnamese classic, often served at breakfast time. Freshlay Farms Golden Yolker eggs work a treat in this vegetarian fakeaway, providing…","cta":"","f":"image","ps":null,"pt":"Unscored","da":46,"st":"inactive","sd":"2026-07-21","lang":"en","url":"https://app.gethookd.ai/share/ad/127627429?signature=c90a20b122c4612fa2bd804ffffd1b1b37b1a5a4c1dd75236a7c974df8ba1548","plat":["facebook","messenger"]},{"id":127627393,"b":"Freshlay Farms Golden Yolker","c":"Restaurant / Foodservice","t":"","x":"Comment “🥚” for this recipe in your DMs! Fried egg bánh mì is a popular variation on the Vietnamese classic, often served at breakfast time. @goldenyolker eggs work a treat in this…","cta":"","f":"video","ps":null,"pt":"Unscored","da":46,"st":"inactive","sd":"2026-07-21","lang":"en","url":"https://app.gethookd.ai/share/ad/127627393?signature=8fe9c22fa37023aee7f42bf883611e51d5d77ba8a36e71953d5b2f097752b25b","plat":["instagram"]},{"id":122807645,"b":"Minh Nhật Masterchef","c":"Restaurant / Foodservice","t":"","x":"Muốn kinh doanh 1 quầy bánh mì nhỏ phải đầu tư từ đâu? #minhnhatmasterchef #kinhdoanhbanhmi #cnkdbmvn","cta":"Message","f":"video","ps":null,"pt":"Unscored","da":64,"st":"inactive","sd":"2026-07-03","lang":"vi","url":"https://app.gethookd.ai/share/ad/122807645?signature=b88cad9edc8cc16c598668a5ea91d7ec4a1fc52f4c97a4a6a15d7b29ef73d4f1","plat":["facebook","instagram","audience_network","messenger"]},{"id":122807537,"b":"Minh Nhật Masterchef","c":"Restaurant / Foodservice","t":"Sách cẩm nang kinh doanh bánh mì Việt Nam","x":"Một cuốn cẩm nang cho người mới bắt đầu, dễ dàng tiếp cận, tối ưu chi phí! #Minhnhatmasterchef","cta":"Message","f":"video","ps":null,"pt":"Unscored","da":79,"st":"inactive","sd":"2026-06-18","lang":"vi","url":"https://app.gethookd.ai/share/ad/122807537?signature=b1aab3322cabb9165170c14513d32b9bcb5034dc76c9111e28a210d80bf48231","plat":["facebook","instagram","audience_network","messenger"]},{"id":138572055,"b":"Urban Herbs","c":"Produce / Herbs","t":"Order Vietnamese Coriander","x":"Vietnamese Coriander is a herb plant that looks beautiful within the herb garden and tastes delicious when you harvest the foliage to use in a foodie creation within the kitchen. Native to…","cta":"Shop Now","f":"video","ps":74,"pt":"Growing","da":34,"st":"active","sd":"2026-08-02","lang":"en","url":"https://app.gethookd.ai/share/ad/138572055?signature=b7f5f7dd71389e3f7caf07c40908bac9f49afcc495a29bf877526f95061e701b","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":144795207,"b":"Urban Herbs","c":"Produce / Herbs","t":"Order Vietnamese Coriander","x":"Vietnamese Coriander is a herb plant that looks beautiful within the herb garden and tastes delicious when you harvest the foliage to use in a foodie creation within the kitchen. Native to…","cta":"Shop Now","f":"video","ps":72,"pt":"Growing","da":24,"st":"active","sd":"2026-08-12","lang":"en","url":"https://app.gethookd.ai/share/ad/144795207?signature=6a1c1ac3a6668951f52629c7919a3f580efe2dac63ea1af46695283c70b95997","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":123620909,"b":"Urban Herbs","c":"Produce / Herbs","t":"Order Vietnamese Coriander","x":"Vietnamese Coriander is a herb plant that looks beautiful within the herb garden and tastes delicious when you harvest the foliage to use in a foodie creation within the kitchen. Native to…","cta":"Shop Now","f":"video","ps":null,"pt":"Unscored","da":45,"st":"inactive","sd":"2026-07-15","lang":"en","url":"https://app.gethookd.ai/share/ad/123620909?signature=f8b953927dc34231f13ad6ec66c857d69ade97b8ca77b4ca8d584f186115969b","plat":["facebook","instagram","audience_network","messenger","threads"]},{"id":131960978,"b":"Havigo Farm - Supplier of Vietnamese Fruits","c":"Sauces / Spices / Export","t":"Get Price for 1 Container of Vietnamese Cassia >>","x":"✨ Import Cassia with the best price and highest quality from Havigo – Vietnam! Benefits when importing at least one container directly from Havigo’s cassia factory: ✅ Competitive…","cta":"WhatsApp","f":"video","ps":null,"pt":"Unscored","da":33,"st":"inactive","sd":"2026-08-03","lang":"en","url":"https://app.gethookd.ai/share/ad/131960978?signature=027a33e066fbbabf90188616928436dc24f75feb420c4cfd4627b217ed4da862","plat":["facebook","instagram","audience_network","messenger","whatsapp"]},{"id":171087710,"b":"Nerve Support Community","c":"Off-niche Storytelling (uses VN anecdote)","t":"Feel Like Yourself Again","x":"I got stuck in my dress at the bridal shop in Mobile last March and I sat in the parking lot afterwards for 40 minutes before I could drive home. The seamstress was kind about it. She was a…","cta":"Learn More","f":"image","ps":28,"pt":"Testing","da":2,"st":"active","sd":"2026-09-03","lang":"en","url":"https://app.gethookd.ai/share/ad/171087710?signature=c217ba68152b948c0bb7191a58413507e80c82e1107847d6919019ba0a4e9122","plat":["facebook","instagram","audience_network","whatsapp","threads"]},{"id":171087959,"b":"Nerve Support Community","c":"Off-niche Storytelling (uses VN anecdote)","t":"Feel Like Yourself Again","x":"I got stuck in my dress at the bridal shop in Mobile last March and I sat in the parking lot afterwards for 40 minutes before I could drive home. The seamstress was kind about it. She was a…","cta":"Learn More","f":"image","ps":20,"pt":"Testing","da":2,"st":"active","sd":"2026-09-03","lang":"en","url":"https://app.gethookd.ai/share/ad/171087959?signature=ec8887cd0e52f47051a257ff9230c495f6c35b2e3cf18768a3b9e51500be5002","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]},{"id":171398076,"b":"Arthritis Support Community","c":"Off-niche Storytelling (uses VN anecdote)","t":"Feel Like Yourself Again","x":"I got stuck in my dress at the bridal shop in Mobile last March and I sat in the parking lot afterwards for 40 minutes before I could drive home. The seamstress was kind about it. She was a…","cta":"Learn More","f":"image","ps":12,"pt":"Testing","da":2,"st":"active","sd":"2026-09-03","lang":"en","url":"https://app.gethookd.ai/share/ad/171398076?signature=00e9e9008a452d65cf9f58d9900c533892464e2cc1135d087a55e15555554629","plat":["facebook","instagram","audience_network","whatsapp","threads"]},{"id":171088103,"b":"Nerve Support Community","c":"Off-niche Storytelling (uses VN anecdote)","t":"Feel Like Yourself Again","x":"I got stuck in my dress at the bridal shop in Mobile last March and I sat in the parking lot afterwards for 40 minutes before I could drive home. The seamstress was kind about it. She was a…","cta":"Learn More","f":"image","ps":12,"pt":"Testing","da":2,"st":"active","sd":"2026-09-03","lang":"en","url":"https://app.gethookd.ai/share/ad/171088103?signature=655cfaf1de31a6e350092698c78646ba38a5742ed195df31867f384bad445cbf","plat":["facebook","instagram","audience_network","messenger","whatsapp","threads"]}]</script>
+<script>
+(function(){
+  "use strict";
+  var ADS = JSON.parse(document.getElementById('ads-data').textContent);
+
+  var CAT_COLOR = {
+    'Noodles / Pho / Buns': 'var(--cat-1)',
+    'Coffee': 'var(--cat-2)',
+    'Meat Snacks (Jerky)': 'var(--cat-3)',
+    'Asian Grocery Delivery (Weee!)': 'var(--cat-4)',
+    'Restaurant / Foodservice': 'var(--cat-5)',
+    'Produce / Herbs': 'var(--cat-6)',
+    'Sauces / Spices / Export': 'var(--cat-7)',
+    'Off-niche Storytelling (uses VN anecdote)': 'var(--cat-8)'
+  };
+  var CAT_LABEL = {
+    'Noodles / Pho / Buns': 'Noodles / Phở / Buns',
+    'Coffee': 'Coffee',
+    'Meat Snacks (Jerky)': 'Meat Snacks',
+    'Asian Grocery Delivery (Weee!)': 'Grocery Delivery',
+    'Restaurant / Foodservice': 'Restaurant',
+    'Produce / Herbs': 'Produce / Herbs',
+    'Sauces / Spices / Export': 'Sauces / Export',
+    'Off-niche Storytelling (uses VN anecdote)': 'Off-niche'
+  };
+  var CAT_ORDER = ['Noodles / Pho / Buns','Coffee','Meat Snacks (Jerky)','Asian Grocery Delivery (Weee!)','Restaurant / Foodservice','Produce / Herbs','Sauces / Spices / Export','Off-niche Storytelling (uses VN anecdote)'];
+
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function tierClass(t){ return 'tier-' + (t||'unscored').toLowerCase(); }
+
+  /* ---------------- AD GRID ---------------- */
+  var gridEl = document.getElementById('ad-grid');
+  var countEl = document.getElementById('grid-count');
+  var emptyEl = document.getElementById('empty-msg');
+  var currentFilter = 'all';
+
+  function cardHtml(a){
+    var color = CAT_COLOR[a.c] || 'var(--ink-muted)';
+    var headline = a.t ? esc(a.t) : '<span style="color:var(--ink-muted);font-weight:500;">(no headline — copy-led ad)</span>';
+    return '' +
+      '<article class="ad-card" style="--cat:'+color+'" data-cat="'+esc(a.c)+'">' +
+        '<div class="top"><div class="brand">'+esc(a.b)+'</div><div class="cat-tag">'+esc(CAT_LABEL[a.c]||a.c)+'</div></div>' +
+        '<div class="headline">'+headline+'</div>' +
+        '<div class="body">'+esc(a.x)+'</div>' +
+        '<div class="meta">' +
+          '<span class="pill">'+esc(a.f)+'</span>' +
+          '<span class="pill">'+esc(a.cta)+'</span>' +
+          '<span class="pill '+tierClass(a.pt)+'">'+esc(a.pt)+(a.ps!=null?' · '+a.ps:'')+'</span>' +
+        '</div>' +
+        '<div class="foot"><span>'+ (a.da!=null? a.da+'d live':'—') +' · '+esc(a.st||'') +'</span><a href="'+esc(a.url)+'" target="_blank" rel="noopener">View ad ↗</a></div>' +
+      '</article>';
+  }
+
+  function renderGrid(){
+    var items = currentFilter==='all' ? ADS : ADS.filter(function(a){return a.c===currentFilter;});
+    gridEl.innerHTML = items.map(cardHtml).join('');
+    countEl.textContent = items.length + ' of ' + ADS.length + ' shown';
+    emptyEl.style.display = items.length ? 'none' : 'block';
+  }
+
+  function renderFilters(){
+    var counts = {};
+    ADS.forEach(function(a){ counts[a.c] = (counts[a.c]||0)+1; });
+    var buttons = [{key:'all', label:'All categories', n:ADS.length, color:'var(--ink-muted)'}];
+    CAT_ORDER.forEach(function(c){ if(counts[c]) buttons.push({key:c, label:CAT_LABEL[c]||c, n:counts[c], color:CAT_COLOR[c]}); });
+    var host = document.getElementById('filters');
+    host.innerHTML = buttons.map(function(b){
+      return '<button class="filter-btn" data-key="'+esc(b.key)+'" aria-pressed="'+(b.key===currentFilter)+'">' +
+        '<span class="dot" style="background:'+b.color+'"></span>' + esc(b.label) + ' <span class="n">'+b.n+'</span></button>';
+    }).join('');
+    Array.prototype.forEach.call(host.querySelectorAll('.filter-btn'), function(btn){
+      btn.addEventListener('click', function(){
+        currentFilter = btn.getAttribute('data-key');
+        Array.prototype.forEach.call(host.querySelectorAll('.filter-btn'), function(b2){ b2.setAttribute('aria-pressed', String(b2===btn)); });
+        renderGrid();
+      });
+    });
+  }
+
+  renderFilters();
+  renderGrid();
+
+  /* ---------------- CHART ENGINE ---------------- */
+  var NS = 'http://www.w3.org/2000/svg';
+  function el(tag, attrs){
+    var e = document.createElementNS(NS, tag);
+    for(var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  // Horizontal bar chart. opts: {data:[{label,value,color,sub}], width, height, max, valueSuffix, leftPad}
+  function drawBarChart(svgEl, opts){
+    var data = opts.data;
+    var w = opts.width, h = opts.height;
+    var leftPad = opts.leftPad || 150;
+    var rightPad = 46;
+    var topPad = 8, bottomPad = 8;
+    var plotW = w - leftPad - rightPad;
+    var rowH = (h - topPad - bottomPad) / data.length;
+    var barH = Math.min(18, rowH*0.56);
+    var max = opts.max || Math.max.apply(null, data.map(function(d){return d.value;}));
+    svgEl.setAttribute('viewBox','0 0 '+w+' '+h);
+    svgEl.innerHTML='';
+
+    // gridlines (0, 25%, 50%, 75%, 100% of max)
+    [0,0.25,0.5,0.75,1].forEach(function(f){
+      var x = leftPad + plotW*f;
+      svgEl.appendChild(el('line',{x1:x,y1:topPad,x2:x,y2:h-bottomPad,class:'grid-line'}));
+    });
+
+    data.forEach(function(d,i){
+      var cy = topPad + rowH*i + rowH/2;
+      var barW = Math.max(2, plotW * (d.value/max));
+      var label = el('text',{x:leftPad-10, y:cy+4, 'text-anchor':'end', class:'bar-label'});
+      label.textContent = d.label;
+      svgEl.appendChild(label);
+
+      var rect = el('rect',{x:leftPad, y:cy-barH/2, width:barW, height:barH, rx:4, ry:4, fill:d.color||'var(--seq-4)', class:'bar-rect'});
+      var title = el('title',{});
+      title.textContent = d.label + ': ' + d.value + (opts.valueSuffix||'') + (d.sub? ' · '+d.sub : '');
+      rect.appendChild(title);
+      svgEl.appendChild(rect);
+
+      var val = el('text',{x:leftPad+barW+8, y:cy+4, class:'bar-value'});
+      val.textContent = d.value + (opts.valueSuffix||'');
+      svgEl.appendChild(val);
+    });
+  }
+
+  var catCounts = {}; ADS.forEach(function(a){ catCounts[a.c]=(catCounts[a.c]||0)+1; });
+  drawBarChart(document.getElementById('chart-category'), {
+    width:900, height:300, leftPad:200,
+    data: CAT_ORDER.filter(function(c){return catCounts[c];}).map(function(c){
+      return {label: CAT_LABEL[c]||c, value: catCounts[c], color: CAT_COLOR[c]};
+    })
+  });
+
+  var fmtCounts = {}; ADS.forEach(function(a){ fmtCounts[a.f]=(fmtCounts[a.f]||0)+1; });
+  drawBarChart(document.getElementById('chart-format'), {
+    width:420, height:170, leftPad:90,
+    data: Object.keys(fmtCounts).sort(function(a,b){return fmtCounts[b]-fmtCounts[a];}).map(function(f){
+      return {label: f.charAt(0).toUpperCase()+f.slice(1), value: fmtCounts[f], color:'var(--seq-4)'};
+    })
+  });
+
+  var ctaCounts = {}; ADS.forEach(function(a){ if(a.cta) ctaCounts[a.cta]=(ctaCounts[a.cta]||0)+1; });
+  var ctaTop = Object.keys(ctaCounts).sort(function(a,b){return ctaCounts[b]-ctaCounts[a];}).slice(0,6);
+  drawBarChart(document.getElementById('chart-cta'), {
+    width:420, height:190, leftPad:100,
+    data: ctaTop.map(function(c){ return {label:c, value:ctaCounts[c], color:'var(--seq-3)'}; })
+  });
+
+  var TIER_ORDER = ['Testing','Scaling','Growing','Optimized','Winning'];
+  var TIER_COLOR = {Testing:'var(--seq-1)',Scaling:'var(--seq-2)',Growing:'var(--seq-3)',Optimized:'var(--seq-4)',Winning:'var(--seq-5)'};
+  var tierCounts = {}; ADS.forEach(function(a){ tierCounts[a.pt]=(tierCounts[a.pt]||0)+1; });
+  drawBarChart(document.getElementById('chart-tier'), {
+    width:900, height:190, leftPad:110,
+    data: TIER_ORDER.filter(function(t){return tierCounts[t];}).map(function(t){
+      return {label:t, value:tierCounts[t], color:TIER_COLOR[t]};
+    })
+  });
+
+  var GROCERY_CATS = ['Noodles / Pho / Buns','Coffee','Meat Snacks (Jerky)','Asian Grocery Delivery (Weee!)','Restaurant / Foodservice','Produce / Herbs'];
+  function avgBy(field, cats){
+    return cats.map(function(c){
+      var vals = ADS.filter(function(a){return a.c===c && a[field]!=null;}).map(function(a){return a[field];});
+      var avg = vals.length ? vals.reduce(function(x,y){return x+y;},0)/vals.length : 0;
+      return {label: CAT_LABEL[c]||c, value: Math.round(avg*10)/10, color: CAT_COLOR[c]};
+    }).filter(function(d){return d.value>0;});
+  }
+  drawBarChart(document.getElementById('chart-score'), {
+    width:440, height:260, leftPad:130, max:100,
+    data: avgBy('ps', GROCERY_CATS)
+  });
+  drawBarChart(document.getElementById('chart-days'), {
+    width:440, height:260, leftPad:130, valueSuffix:'d',
+    data: avgBy('da', GROCERY_CATS)
+  });
+
+  var brandCounts = {}; ADS.forEach(function(a){ brandCounts[a.b]=(brandCounts[a.b]||0)+1; });
+  var topBrands = Object.keys(brandCounts).sort(function(a,b){return brandCounts[b]-brandCounts[a];}).slice(0,10);
+  drawBarChart(document.getElementById('chart-brands'), {
+    width:900, height:260, leftPad:220,
+    data: topBrands.map(function(b){ return {label:b, value:brandCounts[b], color:'var(--seq-3)'}; })
+  });
+
+})();
+</script>
+</body>
+</html>
